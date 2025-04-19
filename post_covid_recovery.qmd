@@ -1,0 +1,54 @@
+---
+title: "Post-COVID Economic Recovery in Asia"
+author: 
+  - name: Jacky An
+    id: 1234567
+  - name: [Name2]
+    id: [ID2]
+  - name: [Name3]
+    id: [ID3]
+format: 
+  html:
+    toc: true
+    toc-depth: 2
+    number-sections: true
+    code-fold: true
+  pdf:
+    documentclass: article
+    toc: true
+    number-sections: true
+    keep-tex: true
+jupyter: python3
+editor: visual
+---
+
+## Introduction
+
+This report explores post-COVID economic recovery in selected Asian countries, using GDP growth, employment rate, and GDP per capita as indicators. The study uses data from the World Bank World Development Indicators (WDI), covering the years 2015–2023. We analyze and compare recovery trajectories using descriptive statistics and data visualization.
+
+## Data Description
+
+The data was retrieved using the `wbdata` Python package from the World Bank API. We focused on the following indicators:
+
+- **GDP per capita (constant 2015 US$)** — `NY.GDP.PCAP.KD`
+- **GDP growth (annual %)** — `NY.GDP.MKTP.KD.ZG`
+- **Employment to population ratio (%, age 15+)** — `SL.EMP.TOTL.SP.ZS`
+
+Countries included: China, India, Indonesia, Vietnam, Philippines, and Japan.
+
+```{python}
+import wbdata
+import pandas as pd
+import datetime
+
+countries = ['CHN', 'IND', 'IDN', 'VNM', 'PHL', 'JPN']
+indicators = {
+    'gdp_per_capita': 'NY.GDP.PCAP.KD',
+    'employment_rate': 'SL.EMP.TOTL.SP.ZS',
+    'gdp_growth': 'NY.GDP.MKTP.KD.ZG'
+}
+start_date = datetime.datetime(2015, 1, 1)
+end_date = datetime.datetime(2023, 12, 31)
+
+df = wbdata.get_dataframe(indicators, countries, (start_date, end_date), convert_date=True).reset_index()
+df.head()
